@@ -16,4 +16,9 @@ class Ship
     @health -= 1
   end
 
+  def sunk?
+    return true if health == 0  ## how to know whether to include the @symbol?
+    false
+  end
+
 end
