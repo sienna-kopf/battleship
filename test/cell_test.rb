@@ -42,5 +42,38 @@ class CellTest < Minitest::Test
     assert_equal true, @cell.fired_upon?
   end
 
+  def test_it_can_be_rendered_none_miss_hit
+    assert_equal false, @cell.fired_upon?
+    assert_equal '.', @cell.render
+    @cell.fire_upon
+    assert_equal 'M', @cell.render
+    @cell.place_ship(@cruiser)
+    @cell.fire_upon
+    assert_equal 'H', @cell.render
+  end
+
+  def test_if_hit_sinks_ship_render_X
+    dinghy = Ship.new("Dinghy", 1)
+
+    assert_equal '.', @cell.render
+    assert_equal 1, dinghy.health
+
+    @cell.place_ship(dinghy)
+    @cell.fire_upon
+    assert_equal 'X', @cell.render
+    assert_equal 0, dinghy.health
+    assert_equal true, dinghy.sunk?
+  end
+
+  def test_render_with_optional_boolean_arg
+    assert_nil nil, @cell.render(false)
+
+
+    @cell.place_ship(@cruiser)
+    assert_equal 'S', @cell.render(true)
+  end
+
+
+
 
 end
