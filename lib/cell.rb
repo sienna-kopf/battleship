@@ -27,5 +27,18 @@ class Cell < Ship ## concept of inheritance. The cell class inherits all functio
     end
   end
 
+  def render(boolean = true)
+    if empty? && fired_upon?
+      'M'
+    elsif empty? && !(fired_upon?)
+      '.'
+    elsif !(empty?) && fired_upon? && @ship.sunk?
+      'X'
+    elsif !(empty?) && fired_upon?
+      'H'
+    else
+      'S'
+    end
+  end
 
 end
