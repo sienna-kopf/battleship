@@ -2,7 +2,6 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/ship'
 require './lib/cell'
-require 'pry'
 
 class CellTest < Minitest::Test
   def setup
@@ -29,6 +28,19 @@ class CellTest < Minitest::Test
     assert_equal false, @cell.empty?
   end
 
+  def test_has_it_been_fired_upon
+    assert_equal false, @cell.fired_upon?
+    @cell.fire_upon
+    assert_equal true, @cell.fired_upon?
+  end
+
+  def test_health_decreases_after_hit
+    @cell.place_ship(@cruiser)
+    assert_equal 3, @cell.ship.health
+    @cell.fire_upon
+    assert_equal 2, @cell.ship.health
+    assert_equal true, @cell.fired_upon?
+  end
 
 
 end
