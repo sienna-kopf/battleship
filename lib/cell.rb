@@ -1,4 +1,6 @@
-class Cell < Ship ## concept of inheritance. The cell class inherits all functionality of the ship class.
+class Cell ## concept of inheritance. The cell class inherits all functionality of the ship class.
+  # don't do
+
   attr_reader :coordinate,
               :ship
 
@@ -22,7 +24,7 @@ class Cell < Ship ## concept of inheritance. The cell class inherits all functio
 
   def fire_upon
     @fired_upon = true
-    if place_ship(ship)
+    if !(empty?)
       @ship.hit
     end
   end
