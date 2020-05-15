@@ -68,4 +68,21 @@ class BoardTest < Minitest::Test
     assert_equal false, @board.valid_placement?(@submarine, ['A1', 'A2'])
     assert_equal true, @board.valid_placement?(@submarine, ['C1', 'D1'])
   end
+
+  def test_render_for_empty_board_and_hidden_ships
+    @board.place(@cruiser, ['A1', 'A2', 'A3'])
+
+    # assert_equal "  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n", @board.render
+    # assert_equal "  1 2 3 4 \nA S S S . \nB . . . . \nC . . . . \nD . . . . \n", @board.render(true)
+    assert_equal ("  1 2 3 4 \n" +
+                  "A . . . . \n" +
+                  "B . . . . \n" +
+                  "C . . . . \n" +
+                  "D . . . . \n"), @board.render
+    assert_equal ("  1 2 3 4 \n" +
+                  "A S S S . \n" +
+                  "B . . . . \n" +
+                  "C . . . . \n" +
+                  "D . . . . \n"), @board.render(true)
+  end
 end
