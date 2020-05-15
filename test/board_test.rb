@@ -70,10 +70,14 @@ class BoardTest < Minitest::Test
   end
 
   def test_render_for_empty_board_and_hidden_ships
+    assert_equal ("  1 2 3 4 \n" +
+                  "A . . . . \n" +
+                  "B . . . . \n" +
+                  "C . . . . \n" +
+                  "D . . . . \n"), @board.render
+
     @board.place(@cruiser, ['A1', 'A2', 'A3'])
 
-    # assert_equal "  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n", @board.render
-    # assert_equal "  1 2 3 4 \nA S S S . \nB . . . . \nC . . . . \nD . . . . \n", @board.render(true)
     assert_equal ("  1 2 3 4 \n" +
                   "A . . . . \n" +
                   "B . . . . \n" +
@@ -84,5 +88,25 @@ class BoardTest < Minitest::Test
                   "B . . . . \n" +
                   "C . . . . \n" +
                   "D . . . . \n"), @board.render(true)
+  end
+
+  def test_render_for_board_with_misses_and_hits_and_optional_boolean_val
+    @board.place(@cruiser, ['A1', 'A2', 'A3'])
+    @board.place(@submarine, ['C1', 'D1'])
+    @board.cells['A1'].fire_upon
+    @board.cells['B4'].fire_upon
+    @board.cells['C1'].fire_upon
+    @board.cells['D1'].fire_upon
+
+    assert_equal ("  1 2 3 4 \n" +
+                  "A H . . . \n" +
+                  "B . . . M \n" +
+                  "C X . . . \n" +
+                  "D X . . . \n"), @board.render
+    assert_equal ("  1 2 3 4 \n" +
+                  "A H S S . \n" +
+                  "B . . . M \n" +
+                  "C X . . . \n" +
+                  "D X . . . \n"), @board.render(true)
   end
 end
