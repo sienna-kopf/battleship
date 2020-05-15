@@ -31,6 +31,12 @@ class Board
       return false
     end
 
+    coords.each do |coordinate|
+      if !(@cells[coordinate].empty?)
+        return false
+      end
+    end
+
     coordinates = coords.join.split(//)
     if ship.length == 2 ## no need to iterate
       if coordinates[0].ord == coordinates[2].ord
