@@ -1,4 +1,4 @@
-class Cell < Ship ## concept of inheritance. The cell class inherits all functionality of the ship class.
+class Cell
   attr_reader :coordinate,
               :ship
 

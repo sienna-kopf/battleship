@@ -28,14 +28,48 @@ class Board
 
   def valid_placement?(ship, coords)
     if ship.length == 2
-      same_length?(ship, coords) && consecutive_submarine?(ship, coords)
-    else ship.length == 3
-      same_length?(ship, coords) && consecutive_cruiser?(ship, coords)
+      same_length?(ship, coords) && (consecutive_submarine_on_same_letter?(coords) || consecutive_submarine_on_same_number?(coords))
+    elsif ship.length == 3
+      same_length?(ship, coords) && (consecutive_cruiser_on_same_letter?(coords) || consecutive_cruiser_on_same_number?(coords))
     end
   end
 
   def same_length?(ship, coords)
     coords.count == ship.length
+  end
+
+  def consecutive_submarine_on_same_letter?(coords)
+    if coords.join.split(//).uniq.count <= 3
+      numbers = []
+      numbers << coords.join.delete('ABCD').split(//)
+      numbers.flatten!.sort!
+      numbers.each_cons(2) do |n1, n2|
+        if n2.to_i == n1.to_i + 1
+          return true
+        else
+          return false
+        end
+      end
+    else
+      return false
+    end
+  end
+
+  def consecutive_submarine_on_same_number?(coords)
+    if coords.join.split(//).uniq.count <= 3
+      numbers = []
+      numbers << coords.join.delete('1234').split(//)
+      numbers.flatten!.sort!
+      numbers.each_cons(2) do |n1, n2|
+        if n2.ord == n1.ord + 1
+          return true
+        else
+          return false
+        end
+      end
+    else
+      return false
+    end
   end
 
   def consecutive_cruiser_on_same_letter?(coords)
@@ -50,35 +84,31 @@ class Board
           return false
         end
       end
+    else
+      return false
     end
   end
 
   def consecutive_cruiser_on_same_number?(coords)
     if coords.join.split(//).uniq.count <= 4
       numbers = []
-      numbers << coords.join.split(//)
+      numbers << coords.join.delete('1234').split(//)
       numbers.flatten!.sort!
       numbers.each_cons(3) do |n1, n2, n3|
-        binding.pry
-        if n2.to_i == n1.to_i + 1 && n3.to_i == n2.to_i + 1
+        if n2.ord == n1.ord + 1 && n3.ord == n2.ord + 1
           return true
         else
           return false
         end
       end
+    else
+      return false
     end
   end
 
-  # def consecutive_submarine?(coords)
-  #   numbers = []
-  #   numbers << coords.join.delete('ABCD').split(//)
-  #   numbers.flatten!.sort!
-  #   numbers.each_cons(3) do |n1, n2, n3|
-  #     if n2.to_i == n1.to_i + 1 && n3.to_i == n2.to_i + 1
-  #       return true
-  #     else
-  #       return false
-  #     end
-  #   end
-  # end
+  def place(ship, coordinates)
+
+    # binding.pry
+
+  end
 end
