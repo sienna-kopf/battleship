@@ -57,10 +57,10 @@ class Board
 
   def consecutive_submarine_on_same_number?(coords)
     if coords.join.split(//).uniq.count <= 3
-      numbers = []
-      numbers << coords.join.delete('1234').split(//)
-      numbers.flatten!.sort!
-      numbers.each_cons(2) do |n1, n2|
+      letters = []
+      letters << coords.join.delete('1234').split(//)
+      letters.flatten!.sort!
+      letters.each_cons(2) do |n1, n2|
         if n2.ord == n1.ord + 1
           return true
         else
@@ -91,10 +91,10 @@ class Board
 
   def consecutive_cruiser_on_same_number?(coords)
     if coords.join.split(//).uniq.count <= 4
-      numbers = []
-      numbers << coords.join.delete('1234').split(//)
-      numbers.flatten!.sort!
-      numbers.each_cons(3) do |n1, n2, n3|
+      letters = []
+      letters << coords.join.delete('1234').split(//)
+      letters.flatten!.sort!
+      letters.each_cons(3) do |n1, n2, n3|
         if n2.ord == n1.ord + 1 && n3.ord == n2.ord + 1
           return true
         else
@@ -108,7 +108,7 @@ class Board
 
   def place(ship, coordinates)
 
-    # binding.pry
+    binding.pry
 
   end
 end
