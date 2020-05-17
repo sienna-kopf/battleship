@@ -50,6 +50,39 @@ class BoardTest < Minitest::Test
     assert_equal true, @board.valid_placement?(@cruiser, ['B1', 'C1', 'D1'])
   end
 
+  def test_it_if_coordinates_are_consecutive_for_submarine_on_same_letter
+    @board = Board.new
+    @submarine = Ship.new("Submarine", 2)
+    assert_equal true, @board.consecutive_submarine_on_same_letter?(['A1', 'A2'])
+    assert_equal false, @board.consecutive_submarine_on_same_letter?(['B3', 'B1'])
+    assert_equal false, @board.consecutive_submarine_on_same_letter?(['B3', 'C1'])
+  end
+
+  def test_it_if_coordinates_are_consecutive_for_submarine_on_same_number
+    @board = Board.new
+    @submarine = Ship.new("Submarine", 2)
+    assert_equal false, @board.consecutive_submarine_on_same_number?(['A1', 'C1'])
+    assert_equal false, @board.consecutive_submarine_on_same_number?(['C1', 'B1'])
+    assert_equal false, @board.consecutive_submarine_on_same_number?(['C1', 'B3'])
+  end
+
+  def test_it_if_coordinates_are_consecutive_for_cruiser_on_same_letter
+    @board = Board.new
+    @cruiser = Ship.new("Cruiser", 3)
+    assert_equal false, @board.consecutive_cruiser_on_same_letter?(['A3', 'A2', 'A1'])
+    assert_equal true, @board.consecutive_cruiser_on_same_letter?(['A1', 'A2', 'A3'])
+    assert_equal false, @board.consecutive_cruiser_on_same_letter?(['A4', 'A2', 'A1'])
+  end
+  
+  def test_it_if_coordinates_are_consecutive_for_cruiser_on_same_number
+    @board = Board.new
+    @cruiser = Ship.new("Cruiser", 3)
+    assert_equal true, @board.consecutive_cruiser_on_same_number?(['A3', 'B3', 'C3'])
+    assert_equal false, @board.consecutive_cruiser_on_same_number?(['A2', 'B3', 'C3'])
+    assert_equal false, @board.consecutive_cruiser_on_same_number?(['A1', 'C1', 'D1'])
+    assert_equal false, @board.consecutive_cruiser_on_same_number?(['A4', 'A2', 'A1'])
+  end
+
   def test_placing_same_ship_obj_in_multiple_cells
     @board.place(@cruiser, ['A1', 'A2', 'A3'])
     cell_1 = @board.cells['A1']
