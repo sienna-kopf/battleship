@@ -27,9 +27,15 @@ class Board
   end
 
   def valid_placement?(ship, coords)
-    if ship.length != coords.count
-      return false
-    end
+    # if ship.length != coords.count
+    #   return false
+    # end
+    #
+    # coords.each do |coordinate|
+    #   if !(@cells[coordinate].empty?)
+    #     return false
+    #   end
+    # end
 
     coords.each do |coordinate|
       if !(@cells[coordinate].empty?)
@@ -37,47 +43,123 @@ class Board
       end
     end
 
-    coordinates = coords.join.split(//)
-    if ship.length == 2 ## no need to iterate
-      if coordinates[0].ord == coordinates[2].ord
-        if coordinates[1].to_i + 1 == coordinates[3].to_i
-          return true
-        else
-          return false
-        end
-      elsif coordinates[0].ord + 1 == coordinates[2].ord
-        if coordinates[1].to_i == coordinates[3].to_i
-          return true
-        else
-          return false
-        end
-      else
-        return false
-      end
+    if ship.length == 2
+      same_length?(ship, coords) && (consecutive_submarine_on_same_letter?(coords) || consecutive_submarine_on_same_number?(coords))
     elsif ship.length == 3
-      if coordinates[0].ord == coordinates[2].ord && coordinates[2].ord == coordinates[4].ord
-        if coordinates[1].to_i + 1 == coordinates[3].to_i && coordinates[3].to_i + 1 == coordinates[5].to_i
-          return true
-        else
-          return false
-        end
-      elsif coordinates[0].ord + 1 == coordinates[2].ord && coordinates[2].ord + 1 == coordinates[4].ord
-        if coordinates[1].to_i == coordinates[3].to_i && coordinates[3].to_i == coordinates[5].to_i
-          return true
-        else
-          return false
-        end
-      else
-        return false
-      end
+      same_length?(ship, coords) && (consecutive_cruiser_on_same_letter?(coords) || consecutive_cruiser_on_same_number?(coords))
     end
+  end
+
+    # coordinates = coords.join.split(//)
+    # if ship.length == 2 ## no need to iterate
+    #   if coordinates[0].ord == coordinates[2].ord
+    #     if coordinates[1].to_i + 1 == coordinates[3].to_i
+    #       return true
+    #     else
+    #       return false
+    #     end
+    #   elsif coordinates[0].ord + 1 == coordinates[2].ord
+    #     if coordinates[1].to_i == coordinates[3].to_i
+    #       return true
+    #     else
+    #       return false
+    #     end
+    #   else
+    #     return false
+    #   end
+    # elsif ship.length == 3
+    #   if coordinates[0].ord == coordinates[2].ord && coordinates[2].ord == coordinates[4].ord
+    #     if coordinates[1].to_i + 1 == coordinates[3].to_i && coordinates[3].to_i + 1 == coordinates[5].to_i
+    #       return true
+    #     else
+    #       return false
+    #     end
+    #   elsif coordinates[0].ord + 1 == coordinates[2].ord && coordinates[2].ord + 1 == coordinates[4].ord
+    #     if coordinates[1].to_i == coordinates[3].to_i && coordinates[3].to_i == coordinates[5].to_i
+    #       return true
+    #     else
+    #       return false
+    #     end
+    #   else
+    #     return false
+    #   end
+    # end
 
     #     # think about splitting the array into numbers and letters
     #     # iterate through odd ele (LETTERS) and even ele (NUMBERS)
     #     # break down to simplist possible version
     #     # simplist way to compare coordinates is compare a coordinate to itself. Do I want to split it, take ord values etc
     #     # second most complicated is thinking about two coordinates. Not necessarily iterating
+  def same_length?(ship, coords)
+    coords.count == ship.length
+  end
 
+  def consecutive_submarine_on_same_letter?(coords)
+    if coords.join.split(//).uniq.count <= 3
+      numbers = []
+      numbers << coords.join.delete('ABCD').split(//)
+      numbers.flatten!
+      numbers.each_cons(2) do |n1, n2|
+        if n2.to_i == n1.to_i + 1
+          return true
+        else
+          return false
+        end
+      end
+    else
+      return false
+    end
+  end
+
+  def consecutive_submarine_on_same_number?(coords)
+    if coords.join.split(//).uniq.count <= 3
+      letters = []
+      letters << coords.join.delete('1234').split(//)
+      letters.flatten!
+      letters.each_cons(2) do |n1, n2|
+        if n2.ord == n1.ord + 1
+          return true
+        else
+          return false
+        end
+      end
+    else
+      return false
+    end
+  end
+
+  def consecutive_cruiser_on_same_letter?(coords)
+    if coords.join.split(//).uniq.count <= 4
+      numbers = []
+      numbers << coords.join.delete('ABCD').split(//)
+      numbers.flatten!
+      numbers.each_cons(3) do |n1, n2, n3|
+        if n2.to_i == n1.to_i + 1 && n3.to_i == n2.to_i + 1
+          return true
+        else
+          return false
+        end
+      end
+    else
+      return false
+    end
+  end
+
+  def consecutive_cruiser_on_same_number?(coords)
+    if coords.join.split(//).uniq.count <= 4
+      letters = []
+      letters << coords.join.delete('1234').split(//)
+      letters.flatten!
+      letters.each_cons(3) do |n1, n2, n3|
+        if n2.ord == n1.ord + 1 && n3.ord == n2.ord + 1
+          return true
+        else
+          return false
+        end
+      end
+    else
+      return false
+    end
   end
 
   def place(ship, coordinates)
