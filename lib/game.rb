@@ -123,14 +123,14 @@ class Game
       input = gets.chomp
     end
     @computer_board.cells[input].fire_upon
+    puts "Your shot on #{input} was a #{@computer_board.cells[input].text_render}."
   end
 
   def computer_shot
     rand_comp_shot = @player_board.cells.keys.sample
-    @player_board.cells[rand_comp_shot].fire_upon 
+    @player_board.cells[rand_comp_shot].fire_upon
+    puts "My shot on #{rand_comp_shot} was a #{@player_board.cells[rand_comp_shot].text_render}."
   end
-
-
 
 # Initializes an array with all possible placement array combinateions for the cruiser
   def all_cruiser_placements
