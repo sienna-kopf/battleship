@@ -24,13 +24,16 @@ class GameTest < Minitest::Test
   #
   # end
 
-  def test_computer_ship_placement
-    @battleship.setup
-    @battleship.computer_place_ships
+  # def test_computer_randomizes_a_valid_pick_for_ship_placement
+  #   @battleship.computer_rand_placement
+  #
+  #
+  #   # assert_equal true, @battleship.computer_rand_placement
+  # end
 
-    assert_equal true, @battleship.board.valid_placement?(rand_ship, rand_coordinates)
-  end
-
+  # def test_player_placement_input
+  #   @battleship.cruiser_input_for_player_ship_placement
+  # end
 
   # def test_retrieve_valid_input
   #   # assert_equal "Yes valid input", @battleship.retrieve_valid_input(true)
@@ -40,5 +43,23 @@ class GameTest < Minitest::Test
   # # def test_force_user_to_input_something_valid
   # #   assert_equal "OK thats a valid input", @battleship.retrieve_valid_input
   # # end
+
+  # def test_all_possibilities_for_cruiser_placement
+  #   @battleship.computer_rand_placement
+  #
+  #   # assert_equal true, @battleship.computer_board.valid_placement?(@cruiser, cruiser_coordinates_for_comp)
+  # end
+
+  # def test_board_setup
+  #   @battleship.board_setup
+  # end
+
+  def test_players_shot
+    @battleship.board_setup
+    @battleship.board_display
+    @battleship.player_shot
+    @battleship.computer_shot
+    @battleship.board_display
+  end
 
 end
