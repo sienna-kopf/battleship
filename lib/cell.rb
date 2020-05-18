@@ -43,4 +43,14 @@ class Cell ## concept of inheritance. The cell class inherits all functionality 
     end
   end
 
+  def text_render
+    if render == 'M'
+      "miss"
+    elsif render == 'X'
+      "sunk"
+    elsif render == 'H'
+      "hit"
+    end 
+  end
+
 end
