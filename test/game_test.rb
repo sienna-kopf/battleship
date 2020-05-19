@@ -56,10 +56,7 @@ class GameTest < Minitest::Test
 
   def test_players_shot
     @battleship.board_setup
-    @battleship.board_display
-    @battleship.player_shot
-    @battleship.computer_shot
-    @battleship.board_display
+    @battleship.turn 
   end
 
 end

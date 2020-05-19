@@ -123,13 +123,28 @@ class Game
       input = gets.chomp
     end
     @computer_board.cells[input].fire_upon
-    puts "Your shot on #{input} was a #{@computer_board.cells[input].text_render}."
+    puts "Your shot on #{input} #{@computer_board.cells[input].text_render}"
   end
 
   def computer_shot
     rand_comp_shot = @player_board.cells.keys.sample
     @player_board.cells[rand_comp_shot].fire_upon
-    puts "My shot on #{rand_comp_shot} was a #{@player_board.cells[rand_comp_shot].text_render}."
+    puts "My shot on #{rand_comp_shot} #{@player_board.cells[rand_comp_shot].text_render}"
+  end
+
+  def turn
+    require "pry"; binding.pry
+    until (@cruiser_play.sunk? && @submarine_play.sunk?) || (@cruiser_comp.sunk? && @submarine_comp.sunk?) do
+      board_display
+      player_shot
+      computer_shot
+    end
+
+    if @cruiser_play.sunk? && @submarine_play.sunk?
+      puts "I won"
+    elsif @cruiser_comp.sunk? && @submarine_comp.sunk?
+      puts "You won"
+    end
   end
 
 # Initializes an array with all possible placement array combinateions for the cruiser
