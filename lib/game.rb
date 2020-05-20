@@ -10,11 +10,12 @@ class Game
   end
 
   def start
-    retrieve_valid_input
-    if retrieve_valid_input == 'p'
-      board_setup
-      turn
-    end
+    game_starter
+  end
+
+  def setup_and_play
+    board_setup
+    turn
   end
 
   #prints the text on the screen for the human to read
@@ -25,14 +26,20 @@ class Game
 
   #prompts user to put in input
   #return of this method is the input of the user
-  def retrieve_valid_input
+  def game_starter
     print_welcome_message
-    input = gets.chomp
-    until input == 'q' || input == 'p' do
-      print_welcome_message
+
+    loop do
       input = gets.chomp
+      case input
+      when "p"
+        setup_and_play
+      when "q"
+        break
+      else
+        puts "Unexpected input, please try again:"
+      end
     end
-    input
   end
 
 #runs computer and player board setup
@@ -74,9 +81,15 @@ class Game
       puts "Those are invalid coordinates. Plese try again:"
       # puts "Ships should be placed on linear, consecutive, cells from left to right or top to bottom."
       cruiser_input = gets.chomp.split(" ").to_a
+      # if valid_coordinate_format?(cruiser_input)
+      # else
+      #   puts "Those are invalid coordinates. Plese try again:"
+      #   cruiser_input = gets.chomp.split(" ").to_a
+      # end
     end
     @human_player.board.place(@human_player.cruiser, cruiser_input)
     puts "#{@human_player.board.render(true)}"
+
     puts "Enter the squares for the Submarine (2 spaces)"
     print ">"
     sub_input = gets.chomp.split(" ").to_a
@@ -89,6 +102,12 @@ class Game
     puts "#{@human_player.board.render(true)}"
   end
 
+  # def valid_coordinate_format?(input)
+  #    #iterate through the input to see if its valid
+  #    input.all? do |coordinate|
+  #      coordinate.match?(/\w{2}/)
+  #    end
+  # end
 
   def turn
     # dorion put the top part in a method
