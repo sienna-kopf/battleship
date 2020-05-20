@@ -1,6 +1,7 @@
 class Game
   attr_reader :computer_player,
-              :human_player
+              :human_player,
+              :game_turn
 
   def setup
     @computer_player = Player.new
