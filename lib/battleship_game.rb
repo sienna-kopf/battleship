@@ -124,7 +124,7 @@ class Battleship
     puts "Computer fires first. Press Enter to continue:"
     input = gets.chomp
     input == ""
-    
+    binding.pry
     @board2.cells[''].fire_upon
     puts @board2.render(true)
     puts "Choose a coordinate to fire upon the opponents board"
