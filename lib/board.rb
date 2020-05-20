@@ -30,6 +30,10 @@ class Board
     @cells.include?(coordinate) && !(@cells[coordinate].fired_upon?)
   end
 
+  def has_been_fired_upon(coordinate)
+    @cells[coordinate].fired_upon?
+  end
+
   def valid_placement?(ship, coords)
     coords.each do |coordinate|
       if !(@cells[coordinate].empty?)
