@@ -9,7 +9,10 @@ require './lib/player'
 
 class TurnTest < Minitest::Test
   def setup
-    @turn = Turn.new
+    @computer_player = Player.new
+    @human_player = Player.new
+
+    @turn = Turn.new(@computer_player, @human_player)
   end
 
   def test_it_exists
