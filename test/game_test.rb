@@ -16,56 +16,15 @@ class GameTest < Minitest::Test
     assert_instance_of Game, @battleship
   end
 
-  # def test_player_input_p_or_q
-  #   assert_equal "p", @battleship.retrieve_valid_input
-  # end
+  def test_it_is_setup_with_players_and_turn
 
-  def test_it_runs
-    @battleship.setup
-    @battleship.start
-    # @battleship.turn
   end
 
 
-  # def test_return_of_welcome_message_is_nil
-  #   assert_nil nil , @battleship.print_welcome_message
-  # end
-  #
-  #
-  # def test_valid_input_loop_run
-  #   @battleship.retrieve_valid_input
-  #
-  # end
-
-  # def test_computer_randomizes_a_valid_pick_for_ship_placement
-  #   @battleship.computer_rand_placement
-  #
-  #
-  #   # assert_equal true, @battleship.computer_rand_placement
-  # end
-
-  # def test_player_placement_input
-  #   @battleship.cruiser_input_for_player_ship_placement
-  # end
-
-  # def test_retrieve_valid_input
-  #   # assert_equal "Yes valid input", @battleship.retrieve_valid_input(true)
-  #   # assert_equal "OK thats a valid input", @battleship.retrieve_valid_input("GO")
-  # end
-  # #
-  # # def test_force_user_to_input_something_valid
-  # #   assert_equal "OK thats a valid input", @battleship.retrieve_valid_input
-  # # end
-
-  # def test_all_possibilities_for_cruiser_placement
-  #   @battleship.computer_rand_placement
-  #
-  #   # assert_equal true, @battleship.computer_board.valid_placement?(@cruiser, cruiser_coordinates_for_comp)
-  # end
-
-  # def test_board_setup
-  #   @battleship.board_setup
-  # end
-
+  def test_it_runs
+    # @battleship.valid_coordinate_format?(['A1', 'A2', 'A*'])
+    @battleship.setup
+    @battleship.start
+  end
 
 end
