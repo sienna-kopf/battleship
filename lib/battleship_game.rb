@@ -85,14 +85,14 @@ class Battleship
       user_input = gets.chomp
       coords_for_cruiser << user_input
       coords_for_cruiser.join.split
-      until @board2.valid_placement?(@cruiser2, coords_for_cruiser.join.split.sort!) == true
+      until @board2.valid_placement?(@cruiser2, coords_for_cruiser.join.upcase.split) == true
         puts "Those are invalid coordinates. Please try again:"
         print ":"
         user_input = gets.chomp
         coords_for_cruiser = []
         coords_for_cruiser << user_input
       end
-      @board2.place(@cruiser2, coords_for_cruiser.join.split)
+      @board2.place(@cruiser2, coords_for_cruiser.join.upcase.split)
       puts @board2.render(true)
       coords_for_submarine = []
       puts "Enter the squares for the Submarine (2 spaces): Example 'A1 A2'."
@@ -100,14 +100,14 @@ class Battleship
       user_input2 = gets.chomp
       coords_for_submarine << user_input2
       coords_for_submarine.join.split
-      until @board2.valid_placement?(@submarine2, coords_for_submarine.join.split) == true
+      until @board2.valid_placement?(@submarine2, coords_for_submarine.join.upcase.split) == true
         puts "Those are invalid coordinates. Please try again: Example 'A1 A2'"
         print ":"
         user_input = gets.chomp
         coords_for_submarine = []
         coords_for_submarine << user_input
       end
-      @board2.place(@cruiser2, coords_for_submarine.join.split)
+      @board2.place(@cruiser2, coords_for_submarine.join.upcase.split)
       puts @board2.render(true)
     elsif input == "q"
       puts "You quit."
@@ -124,13 +124,20 @@ class Battleship
     puts "Computer fires first. Press Enter to continue:"
     input = gets.chomp
     input == ""
+    cells = []
+    cells << @board2.cells.keys
+    cells.flatten!
     binding.pry
-    @board2.cells[''].fire_upon
+    @board2.cells[cells.shuffle.first].fire_upon
     puts @board2.render(true)
     puts "Choose a coordinate to fire upon the opponents board"
     print ":"
+    @board2.cells.keys
+    pry
     input = gets.chomp
     @board1.cells['input'].fire_upon
+
+    # @board2.cells.keys.first.fired_upon? **********
 
   end
 end
