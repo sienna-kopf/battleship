@@ -4,6 +4,8 @@ require './lib/ship'
 require './lib/cell'
 require './lib/board'
 require './lib/game'
+require './lib/turn'
+require './lib/player'
 
 class GameTest < Minitest::Test
   def setup
@@ -13,6 +15,17 @@ class GameTest < Minitest::Test
   def test_it_exists
     assert_instance_of Game, @battleship
   end
+
+  # def test_player_input_p_or_q
+  #   assert_equal "p", @battleship.retrieve_valid_input
+  # end
+
+  def test_it_runs
+    @battleship.setup
+    @battleship.start
+    # @battleship.turn
+  end
+
 
   # def test_return_of_welcome_message_is_nil
   #   assert_nil nil , @battleship.print_welcome_message
@@ -54,9 +67,5 @@ class GameTest < Minitest::Test
   #   @battleship.board_setup
   # end
 
-  def test_players_shot
-    @battleship.board_setup
-    @battleship.turn 
-  end
 
 end
