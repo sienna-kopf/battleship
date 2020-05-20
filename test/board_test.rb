@@ -73,7 +73,7 @@ class BoardTest < Minitest::Test
     assert_equal true, @board.consecutive_cruiser_on_same_letter?(['A1', 'A2', 'A3'])
     assert_equal false, @board.consecutive_cruiser_on_same_letter?(['A4', 'A2', 'A1'])
   end
-  
+
   def test_it_if_coordinates_are_consecutive_for_cruiser_on_same_number
     @board = Board.new
     @cruiser = Ship.new("Cruiser", 3)
