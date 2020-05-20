@@ -68,13 +68,6 @@ class Battleship
     if input == 'p'
       puts "Let's play Battleship"
       puts "We will play on a 4x4 grid sized board"
-      puts "Press the enter to continue"
-      print ":"
-      input == gets.chomp
-      input == ""
-      puts "I will place 2 ships."
-      puts "1 cruiser ship with a length of 3"
-      puts "1 submarine ship with a length of 2"
       cruisecoords = cruiser_coordinate.shuffle.first
       subcoords = submarine_coordinate.shuffle.first
       @board1.place(@cruiser1, cruisecoords)
@@ -83,18 +76,10 @@ class Battleship
       print ":"
       input == gets.chomp
       input == ""
-      puts "I have laid out my ships on the grid."
-      puts "You now need to lay out your ships"
-      puts "You get 2 ships, a cruiser with a lenght of 3"
-      puts "And a submarine with a length of 2"
-      puts "here is your board:"
+      puts "You get 2 ships\nA cruiser with a lenght of 3\nAnd a submarine with a length of 2"
+      puts "Here is your board:"
       puts @board2.render(true)
-      puts "Press the enter to continue"
-      print ":"
-      input == gets.chomp
-      input == ""
       coords_for_cruiser = []
-      puts "Place your cruiser. Cruiser has length of 3"
       puts "Enter the squares for the Cruiser (3 spaces): Example 'A1 A2 A3'."
       print ":"
       user_input = gets.chomp
@@ -136,6 +121,16 @@ class Battleship
     puts @board1.render
     puts "================ PLAYER BOARD ================"
     puts @board2.render(true)
+    puts "Computer fires first. Press Enter to continue:"
+    input = gets.chomp
+    input == ""
+    
+    @board2.cells[''].fire_upon
+    puts @board2.render(true)
+    puts "Choose a coordinate to fire upon the opponents board"
+    print ":"
+    input = gets.chomp
+    @board1.cells['input'].fire_upon
 
   end
 end
