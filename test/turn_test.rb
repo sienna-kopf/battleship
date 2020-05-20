@@ -30,4 +30,5 @@ class TurnTest < Minitest::Test
 
     assert_equal false, random_1 == random_2
   end
+
 end
