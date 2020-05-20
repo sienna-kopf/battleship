@@ -2,9 +2,9 @@ class Turn
   attr_reader :computer_player,
               :human_player
 
-  def initialize
-    @computer_player = Player.new
-    @human_player = Player.new
+  def initialize(computer_player, human_player)
+    @computer_player = computer_player
+    @human_player = human_player
   end
 
   def board_display
