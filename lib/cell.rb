@@ -34,11 +34,11 @@ class Cell ## concept of inheritance. The cell class inherits all functionality 
       'M'
     elsif !(empty?) && fired_upon? && @ship.sunk?
       'X'
-    elsif !(empty?) && fired_upon?
+    elsif !(empty?) && fired_upon? && !(@ship.sunk?)
       'H'
-    elsif !(empty?) && !(fired_upon?) && boolean == true
+    elsif !(empty?) && !(fired_upon?) && boolean == true && !(@ship.sunk?)
       'S'
-    elsif !(fired_upon?)
+    elsif !(fired_upon?) #&& !(@ship.sunk?)
       '.'
     end
   end
