@@ -1,47 +1,37 @@
 class Game
-  attr_reader :cruiser_play,
-              :submarine_play,
-              :cruiser_comp,
-              :submarine_comp,
-              :computer_board,
-              :player_board
-
-  def initialize
-    @cruiser_play = Ship.new("Cruiser", 3)
-    @submarine_play = Ship.new("Submarine", 2)
-    @cruiser_comp = Ship.new("Cruiser", 3)
-    @submarine_comp = Ship.new("Submarine", 2)
-    @computer_board = Board.new
-    @player_board = Board.new
-  end
+  attr_reader :computer_player,
+              :human_player
 
   def setup
-
+    @computer_player = Player.new
+    @human_player = Player.new
+    @game_turn = Turn.new(@computer_player, @human_player)
   end
 
   def start
     retrieve_valid_input
+    if retrieve_valid_input == 'p'
+      board_setup
+      turn
+    end
   end
 
+  #prints the text on the screen for the human to read
   def print_welcome_message
     puts "Welcome to BATTLESHIP"
     puts "Enter p to play. Enter q to quit."
   end
 
+  #prompts user to put in input
+  #return of this method is the input of the user
   def retrieve_valid_input
     print_welcome_message
     input = gets.chomp
-    idiot_input_count = 0
     until input == 'q' || input == 'p' do
-      idiot_input_count += 1
       print_welcome_message
       input = gets.chomp
     end
-    if idiot_input_count < 1
-      p "YAY you can read!"
-    else
-      p "Good job it only took you #{idiot_input_count} tries idiot"
-    end
+    input
   end
 
 #runs computer and player board setup
@@ -55,23 +45,23 @@ class Game
   def computer_rand_placement
     rand_cruiser_coords = all_cruiser_placements.sample
     #I think checking valid_placement? here is redundant since its the first ship placed
-    until @computer_board.valid_placement?(@cruiser_comp, rand_cruiser_coords) do
+    until @computer_player.board.valid_placement?(@computer_player.cruiser, rand_cruiser_coords) do
       rand_cruiser_coords = all_cruiser_placements.sample
     end
-    @computer_board.place(@cruiser_comp, rand_cruiser_coords)
+    @computer_player.board.place(@computer_player.cruiser, rand_cruiser_coords)
 
     rand_sub_coords = all_sub_placements.sample
-    until @computer_board.valid_placement?(@submarine_comp, rand_sub_coords) do
+    until @computer_player.board.valid_placement?(@computer_player.submarine, rand_sub_coords) do
       rand_sub_coords = all_sub_placements.sample
     end
-    @computer_board.place(@submarine_comp, rand_sub_coords)
+    @computer_player.board.place(@computer_player.submarine, rand_sub_coords)
   end
 
   def player_ship_placement_message
     puts "I have laid out my ships on the grid."
     puts "You now need to lay out your two ships."
     puts "The Cruiser is three units long and the Submarine is two units long."
-    puts "#{@player_board.render}"
+    puts "#{@human_player.board.render}"
     puts "Enter the squares for the Cruiser (3 spaces):"
     print ">"
   end
@@ -79,70 +69,41 @@ class Game
   def player_ship_placement_user_input
     player_ship_placement_message
     cruiser_input = gets.chomp.split(" ").to_a
-    until @player_board.valid_placement?(@cruiser_play, cruiser_input) do
+    until @human_player.board.valid_placement?(@human_player.cruiser, cruiser_input) do
       puts "Those are invalid coordinates. Plese try again:"
       # puts "Ships should be placed on linear, consecutive, cells from left to right or top to bottom."
       cruiser_input = gets.chomp.split(" ").to_a
     end
-    @player_board.place(@cruiser_play, cruiser_input)
-    puts "#{@player_board.render(true)}"
+    @human_player.board.place(@human_player.cruiser, cruiser_input)
+    puts "#{@human_player.board.render(true)}"
     puts "Enter the squares for the Submarine (2 spaces)"
     print ">"
     sub_input = gets.chomp.split(" ").to_a
-    until @player_board.valid_placement?(@submarine_play, sub_input) do
+    until @human_player.board.valid_placement?(@human_player.submarine, sub_input) do
       puts "Those are invalid coordinates. Plese try again:"
       # puts "Ships should be placed on linear, consecutive, cells from left to right or top to bottom."
       sub_input = gets.chomp.split(" ").to_a
     end
-    @player_board.place(@submarine_play, sub_input)
-    puts "#{@player_board.render(true)}"
+    @human_player.board.place(@human_player.submarine, sub_input)
+    puts "#{@human_player.board.render(true)}"
   end
 
-  def board_display
-    puts "=============COMPUTER BOARD============="
-    puts "#{@computer_board.render}"
-    puts "==============PLAYER BOARD=============="
-    puts "#{@player_board.render(true)}"
-  end
-
-  def player_shot_message
-    puts "Enter the coordinate for your shot:"
-    print ">"
-  end
-
-  def is_valid_coordinate?(coordinate)
-    @computer_board.cells.include?(coordinate)
-  end
-
-  def player_shot
-    player_shot_message
-    input = gets.chomp
-    until is_valid_coordinate?(input)
-      puts "Please enter a valid coordinate:"
-      print ">"
-      input = gets.chomp
-    end
-    @computer_board.cells[input].fire_upon
-    puts "Your shot on #{input} #{@computer_board.cells[input].text_render}"
-  end
-
-  def computer_shot
-    rand_comp_shot = @player_board.cells.keys.sample
-    @player_board.cells[rand_comp_shot].fire_upon
-    puts "My shot on #{rand_comp_shot} #{@player_board.cells[rand_comp_shot].text_render}"
-  end
 
   def turn
-    require "pry"; binding.pry
-    until (@cruiser_play.sunk? && @submarine_play.sunk?) || (@cruiser_comp.sunk? && @submarine_comp.sunk?) do
-      board_display
-      player_shot
-      computer_shot
+    # dorion put the top part in a method
+    until (@human_player.cruiser.sunk? && @human_player.submarine.sunk?) || (@computer_player.cruiser.sunk? && @computer_player.submarine.sunk?) do
+      @game_turn.board_display
+      @game_turn.player_shot
+      @game_turn.computer_shot
     end
-
-    if @cruiser_play.sunk? && @submarine_play.sunk?
+    if (@human_player.cruiser.sunk? && @human_player.submarine.sunk?) && (@computer_player.cruiser.sunk? && @computer_player.submarine.sunk?)
+      @game_turn.board_display
+      puts "Its a draw!"
+    elsif @human_player.cruiser.sunk? && @human_player.submarine.sunk?
+      @game_turn.board_display
       puts "I won"
-    elsif @cruiser_comp.sunk? && @submarine_comp.sunk?
+    elsif @computer_player.cruiser.sunk? && @computer_player.submarine.sunk?
+      @game_turn.board_display
       puts "You won"
     end
   end
@@ -168,7 +129,6 @@ class Game
       ['B4', 'C4', 'D4']
     ]
   end
-
   # Initializes an array with all possible placement array combinateions for the submarine
   def all_sub_placements
     [
