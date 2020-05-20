@@ -71,11 +71,13 @@ class Battleship
       cruisecoords = cruiser_coordinate.shuffle.first
       subcoords = submarine_coordinate.shuffle.first
       @board1.place(@cruiser1, cruisecoords)
+      
       @board1.place(@submarine1, subcoords)
       puts "Press the enter to continue"
       print ":"
       input == gets.chomp
       input == ""
+
       puts "You get 2 ships\nA cruiser with a lenght of 3\nAnd a submarine with a length of 2"
       puts "Here is your board:"
       puts @board2.render(true)
@@ -85,6 +87,11 @@ class Battleship
       user_input = gets.chomp
       coords_for_cruiser << user_input
       coords_for_cruiser.join.split
+
+      # pry
+      # valid_coordinates
+
+
       until @board2.valid_placement?(@cruiser2, coords_for_cruiser.join.upcase.split) == true
         puts "Those are invalid coordinates. Please try again:"
         print ":"
@@ -117,28 +124,48 @@ class Battleship
   end
 
   def turn
-    puts "=============== COMPUTER BOARD ==============="
-    puts @board1.render
-    puts "================ PLAYER BOARD ================"
-    puts @board2.render(true)
-    puts "Computer fires first. Press Enter to continue:"
-    input = gets.chomp
-    input == ""
-    cells = []
-    cells << @board2.cells.keys
-    cells.flatten!
-    binding.pry
-    @board2.cells[cells.shuffle.first].fire_upon
-    puts @board2.render(true)
-    puts "Choose a coordinate to fire upon the opponents board"
-    print ":"
-    @board2.cells.keys
-    pry
-    input = gets.chomp
-    @board1.cells['input'].fire_upon
+    until @cruiser1.health == 0 && @submarine1.health == 0 || @cruiser2.health == 0 && @submarine2.health == 0 do
+      # puts "=============== COMPUTER BOARD ==============="
+      # puts @board1.render
+      # puts "================ PLAYER BOARD ================"
+      # puts @board2.render(true)
+      puts "Computer fires first. Press Enter to continue:"
+      input = gets.chomp
+      input == ""
 
-    # @board2.cells.keys.first.fired_upon? **********
 
+      cells = []
+      @board2.cells.each do |cell|
+        if cell[1].fired_upon? == false
+          cells << cell
+        end
+      end
+      # cells << @board2.cells.keys
+      cells.flatten!
+      computer_fire = @board2.cells.keys.shuffle.first
+      @board2.cells[computer_fire].fire_upon
+      puts "================ PLAYER BOARD ================"
+      puts @board2.render(true)
+
+
+      puts "Choose a coordinate to fire upon the opponents board"
+      print ":"
+      input = gets.chomp.upcase.to_s
+      until @board1.valid_coordinate?(input) == true && @board1.cells[input].fired_upon? == false
+        puts "Coordinate already fired upon or invalid coordinate.\nTry again:"
+        print ":"
+        input = gets.chomp.upcase.to_s
+      end
+      # @board2.cells.keys
+      @board1.cells[input].fire_upon
+      puts "=============== COMPUTER BOARD ==============="
+      puts @board1.render(true)
+    end
+    if @cruiser1.health == 0 && @submarine1.health == 0
+      puts "You Win!"
+    elsif @cruiser2.health == 0 && @submarine2.health == 0
+      puts "Computer wins! Play agian!"
+    end
   end
 end
 
