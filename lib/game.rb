@@ -13,11 +13,6 @@ class Game
     game_starter
   end
 
-  def return_to_main_menu
-    setup
-    start
-  end
-
   def setup_and_play
     board_setup
     turn
@@ -33,18 +28,15 @@ class Game
   #return of this method is the input of the user
   def game_starter
     print_welcome_message
+    input = gets.chomp.downcase
 
-    loop do
+    while input != 'p' && input != 'q' do
+      puts "Unexpected input, please try again:"
       input = gets.chomp.downcase
-      case input
-      when "p"
-        setup_and_play
-      when "q"
-        break
-      else
-        puts "Unexpected input, please try again:"
-      end
-      return_to_main_menu
+    end
+
+    if input == 'p'
+      setup_and_play
     end
   end
 
@@ -62,8 +54,8 @@ class Game
     until @computer_player.board.valid_placement?(@computer_player.cruiser, rand_cruiser_coords) do
       rand_cruiser_coords = all_cruiser_placements.sample
     end
+    
     @computer_player.board.place(@computer_player.cruiser, rand_cruiser_coords)
-
     rand_sub_coords = all_sub_placements.sample
     until @computer_player.board.valid_placement?(@computer_player.submarine, rand_sub_coords) do
       rand_sub_coords = all_sub_placements.sample
@@ -82,7 +74,6 @@ class Game
 
   def player_ship_placement_user_input
     player_ship_placement_message
-
     cruiser_input = gets.chomp.upcase.split(" ").to_a
     until all_cruiser_placements.include?(cruiser_input) && @human_player.board.valid_placement?(@human_player.cruiser, cruiser_input)
       puts "Those are invalid coordinates. Plese try again:"
@@ -104,7 +95,6 @@ class Game
     puts "#{@human_player.board.render(true)}"
   end
 
-
   def turn
     # dorion put the top part in a method
     until (@human_player.cruiser.sunk? && @human_player.submarine.sunk?) || (@computer_player.cruiser.sunk? && @computer_player.submarine.sunk?) do
@@ -117,14 +107,14 @@ class Game
       puts "Its a draw!"
     elsif @human_player.cruiser.sunk? && @human_player.submarine.sunk?
       @game_turn.board_display
-      puts "I won!"
+      puts "I won"
     elsif @computer_player.cruiser.sunk? && @computer_player.submarine.sunk?
       @game_turn.board_display
-      puts "You won!"
+      puts "You won"
     end
+    setup
+    start
   end
-
-
 
 # Initializes an array with all possible placement array combinateions for the cruiser
   def all_cruiser_placements

@@ -24,9 +24,15 @@ class Turn
     player_shot_message
     input = gets.chomp.upcase
     until @computer_player.board.is_valid_coordinate?(input)
-      puts "Please enter a valid coordinate:"
-      print ">"
-      input = gets.chomp.upcase
+      if @computer_player.board.has_been_fired_upon(input)
+        puts "You have already fired on that coordinate, please try again"
+        print ">"
+        input = gets.chomp.upcase
+      else
+        puts "Please enter a valid coordinate:"
+        print ">"
+        input = gets.chomp.upcase
+      end
     end
     @computer_player.board.cells[input].fire_upon
     puts "Your shot on #{input} #{@computer_player.board.cells[input].text_render}"

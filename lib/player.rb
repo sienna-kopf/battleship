@@ -1,8 +1,7 @@
-
 class Player
-attr_reader :board,
-            :cruiser,
-            :submarine
+  attr_reader :board,
+              :cruiser,
+              :submarine
 
   def initialize
     @board = Board.new

@@ -23,7 +23,17 @@ class Board
   end
 
   def valid_coordinate?(cell_coordinate)
-    @cells.include?(cell_coordinate)
+    @cells.keys.include?(cell_coordinate)
+  end
+
+  def is_valid_coordinate?(coordinate)
+    @cells.keys.include?(coordinate) #&& !(@cells[coordinate].fired_upon?)
+  end
+
+  def has_been_fired_upon(coordinate)
+    if valid_coordinate?(coordinate)
+      @cells[coordinate].fired_upon?
+    end 
   end
 
   def is_valid_coordinate?(coordinate)
@@ -32,10 +42,12 @@ class Board
 
   def valid_placement?(ship, coords)
     coords.each do |coordinate|
-      if !(@cells[coordinate].empty?)
+      if !(@cells[coordinate].empty?) || !(valid_coordinate?(coordinate))
         return false
       end
     end
+
+
 
     if ship.length == 2
       same_length?(ship, coords) && (consecutive_submarine_on_same_letter?(coords) || consecutive_submarine_on_same_number?(coords))
