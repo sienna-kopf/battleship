@@ -17,6 +17,7 @@ class GameTest < Minitest::Test
   end
 
   def test_it_is_setup_with_players_and_turn
+    @battleship.setup
     assert_instance_of Player, @battleship.computer_player
     assert_instance_of Player, @battleship.human_player
     assert_instance_of Turn, @battleship.game_turn
