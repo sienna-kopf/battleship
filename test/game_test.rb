@@ -17,14 +17,9 @@ class GameTest < Minitest::Test
   end
 
   def test_it_is_setup_with_players_and_turn
-
+    assert_instance_of Player, @battleship.computer_player
+    assert_instance_of Player, @battleship.human_player
+    assert_instance_of Turn, @battleship.game_turn
+    assert_equal false, @battleship.computer_player == @battleship.human_player
   end
-
-
-  def test_it_runs
-    # @battleship.valid_coordinate_format?(['A1', 'A2', 'A*'])
-    @battleship.setup
-    @battleship.start
-  end
-
 end
