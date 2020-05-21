@@ -28,17 +28,15 @@ class Game
   #return of this method is the input of the user
   def game_starter
     print_welcome_message
+    input = gets.chomp
 
-    loop do
+    while input != 'p' && input != 'q' do
+      puts "Unexpected input, please try again:"
       input = gets.chomp
-      case input
-      when "p"
-        setup_and_play
-      when "q"
-        break
-      else
-        puts "Unexpected input, please try again:"
-      end
+    end
+
+    if input == 'p'
+      setup_and_play
     end
   end
 
@@ -77,15 +75,10 @@ class Game
   def player_ship_placement_user_input
     player_ship_placement_message
     cruiser_input = gets.chomp.split(" ").to_a
-    until @human_player.board.valid_placement?(@human_player.cruiser, cruiser_input) do
+    until all_cruiser_placements.include?(cruiser_input) && @human_player.board.valid_placement?(@human_player.cruiser, cruiser_input) do
       puts "Those are invalid coordinates. Plese try again:"
       # puts "Ships should be placed on linear, consecutive, cells from left to right or top to bottom."
       cruiser_input = gets.chomp.split(" ").to_a
-      # if valid_coordinate_format?(cruiser_input)
-      # else
-      #   puts "Those are invalid coordinates. Plese try again:"
-      #   cruiser_input = gets.chomp.split(" ").to_a
-      # end
     end
     @human_player.board.place(@human_player.cruiser, cruiser_input)
     puts "#{@human_player.board.render(true)}"
@@ -93,7 +86,7 @@ class Game
     puts "Enter the squares for the Submarine (2 spaces)"
     print ">"
     sub_input = gets.chomp.split(" ").to_a
-    until @human_player.board.valid_placement?(@human_player.submarine, sub_input) do
+    until all_sub_placements.include?(sub_input) && @human_player.board.valid_placement?(@human_player.submarine, sub_input) do
       puts "Those are invalid coordinates. Plese try again:"
       # puts "Ships should be placed on linear, consecutive, cells from left to right or top to bottom."
       sub_input = gets.chomp.split(" ").to_a
@@ -126,6 +119,8 @@ class Game
       @game_turn.board_display
       puts "You won"
     end
+    setup
+    start
   end
 
 # Initializes an array with all possible placement array combinateions for the cruiser
