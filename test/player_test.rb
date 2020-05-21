@@ -27,6 +27,6 @@ class PlayerTest < Minitest::Test
 
     assert_equal false, human_player.board == computer_player.board
     assert_equal false, human_player.cruiser == computer_player.cruiser
-    assert_equal false, human_player.submarine == computer_player.submarine 
+    assert_equal false, human_player.submarine == computer_player.submarine
   end
 end

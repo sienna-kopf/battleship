@@ -36,6 +36,10 @@ class Board
     end 
   end
 
+  def is_valid_coordinate?(coordinate)
+    @cells.include?(coordinate) && !(@cells[coordinate].fired_upon?)
+  end
+
   def valid_placement?(ship, coords)
     coords.each do |coordinate|
       if !(@cells[coordinate].empty?) || !(valid_coordinate?(coordinate))

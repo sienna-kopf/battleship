@@ -54,8 +54,8 @@ class Game
     until @computer_player.board.valid_placement?(@computer_player.cruiser, rand_cruiser_coords) do
       rand_cruiser_coords = all_cruiser_placements.sample
     end
+    
     @computer_player.board.place(@computer_player.cruiser, rand_cruiser_coords)
-
     rand_sub_coords = all_sub_placements.sample
     until @computer_player.board.valid_placement?(@computer_player.submarine, rand_sub_coords) do
       rand_sub_coords = all_sub_placements.sample
@@ -75,10 +75,10 @@ class Game
   def player_ship_placement_user_input
     player_ship_placement_message
     cruiser_input = gets.chomp.upcase.split(" ").to_a
-    until all_cruiser_placements.include?(cruiser_input) && @human_player.board.valid_placement?(@human_player.cruiser, cruiser_input) do
+    until all_cruiser_placements.include?(cruiser_input) && @human_player.board.valid_placement?(@human_player.cruiser, cruiser_input)
       puts "Those are invalid coordinates. Plese try again:"
-      # puts "Ships should be placed on linear, consecutive, cells from left to right or top to bottom."
       cruiser_input = gets.chomp.upcase.split(" ").to_a
+      # puts "Ships should be placed on linear, consecutive, cells from left to right or top to bottom."
     end
     @human_player.board.place(@human_player.cruiser, cruiser_input)
     puts "#{@human_player.board.render(true)}"
@@ -86,21 +86,14 @@ class Game
     puts "Enter the squares for the Submarine (2 spaces)"
     print ">"
     sub_input = gets.chomp.upcase.split(" ").to_a
-    until all_sub_placements.include?(sub_input) && @human_player.board.valid_placement?(@human_player.submarine, sub_input) do
+    until all_sub_placements.include?(sub_input) && @human_player.board.valid_placement?(@human_player.submarine, sub_input)
       puts "Those are invalid coordinates. Plese try again:"
-      # puts "Ships should be placed on linear, consecutive, cells from left to right or top to bottom."
       sub_input = gets.chomp.upcase.split(" ").to_a
+      # puts "Ships should be placed on linear, consecutive, cells from left to right or top to bottom."
     end
     @human_player.board.place(@human_player.submarine, sub_input)
     puts "#{@human_player.board.render(true)}"
   end
-
-  # def valid_coordinate_format?(input)
-  #    #iterate through the input to see if its valid
-  #    input.all? do |coordinate|
-  #      coordinate.match?(/\w{2}/)
-  #    end
-  # end
 
   def turn
     # dorion put the top part in a method
