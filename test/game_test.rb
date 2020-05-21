@@ -67,5 +67,8 @@ class GameTest < Minitest::Test
   #   @battleship.board_setup
   # end
 
+  def test_reutrns_to_main_menu
+
+  end
 
 end
