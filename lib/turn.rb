@@ -22,11 +22,11 @@ class Turn
   ## prompts user to enter a coordinate to fire on, tells them if the coordinate entered is valid or not, and returns the result of the shot
   def player_shot
     player_shot_message
-    input = gets.chomp
+    input = gets.chomp.upcase
     until @computer_player.board.is_valid_coordinate?(input)
       puts "Please enter a valid coordinate:"
       print ">"
-      input = gets.chomp
+      input = gets.chomp.upcase
     end
     @computer_player.board.cells[input].fire_upon
     puts "Your shot on #{input} #{@computer_player.board.cells[input].text_render}"
