@@ -13,11 +13,6 @@ class Game
     game_starter
   end
 
-  def return_to_main_menu
-    setup
-    start
-  end
-
   def setup_and_play
     board_setup
     turn
@@ -44,7 +39,6 @@ class Game
       else
         puts "Unexpected input, please try again:"
       end
-      return_to_main_menu
     end
   end
 
