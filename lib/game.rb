@@ -10,11 +10,17 @@ class Game
   end
 
   def start
-    retrieve_valid_input
-    if retrieve_valid_input == 'p'
-      board_setup
-      turn
-    end
+    game_starter
+  end
+
+  def return_to_main_menu
+    setup
+    start
+  end
+
+  def setup_and_play
+    board_setup
+    turn
   end
 
   #prints the text on the screen for the human to read
@@ -25,14 +31,21 @@ class Game
 
   #prompts user to put in input
   #return of this method is the input of the user
-  def retrieve_valid_input
+  def game_starter
     print_welcome_message
-    input = gets.chomp
-    until input == 'q' || input == 'p' do
-      print_welcome_message
-      input = gets.chomp
+
+    loop do
+      input = gets.chomp.downcase
+      case input
+      when "p"
+        setup_and_play
+      when "q"
+        break
+      else
+        puts "Unexpected input, please try again:"
+      end
+      return_to_main_menu
     end
-    input
   end
 
 #runs computer and player board setup
@@ -69,21 +82,23 @@ class Game
 
   def player_ship_placement_user_input
     player_ship_placement_message
-    cruiser_input = gets.chomp.split(" ").to_a
-    until @human_player.board.valid_placement?(@human_player.cruiser, cruiser_input) do
+
+    cruiser_input = gets.chomp.upcase.split(" ").to_a
+    until all_cruiser_placements.include?(cruiser_input) && @human_player.board.valid_placement?(@human_player.cruiser, cruiser_input)
       puts "Those are invalid coordinates. Plese try again:"
+      cruiser_input = gets.chomp.upcase.split(" ").to_a
       # puts "Ships should be placed on linear, consecutive, cells from left to right or top to bottom."
-      cruiser_input = gets.chomp.split(" ").to_a
     end
     @human_player.board.place(@human_player.cruiser, cruiser_input)
     puts "#{@human_player.board.render(true)}"
+
     puts "Enter the squares for the Submarine (2 spaces)"
     print ">"
-    sub_input = gets.chomp.split(" ").to_a
-    until @human_player.board.valid_placement?(@human_player.submarine, sub_input) do
+    sub_input = gets.chomp.upcase.split(" ").to_a
+    until all_sub_placements.include?(sub_input) && @human_player.board.valid_placement?(@human_player.submarine, sub_input)
       puts "Those are invalid coordinates. Plese try again:"
+      sub_input = gets.chomp.upcase.split(" ").to_a
       # puts "Ships should be placed on linear, consecutive, cells from left to right or top to bottom."
-      sub_input = gets.chomp.split(" ").to_a
     end
     @human_player.board.place(@human_player.submarine, sub_input)
     puts "#{@human_player.board.render(true)}"
@@ -102,12 +117,14 @@ class Game
       puts "Its a draw!"
     elsif @human_player.cruiser.sunk? && @human_player.submarine.sunk?
       @game_turn.board_display
-      puts "I won"
+      puts "I won!"
     elsif @computer_player.cruiser.sunk? && @computer_player.submarine.sunk?
       @game_turn.board_display
-      puts "You won"
+      puts "You won!"
     end
   end
+
+
 
 # Initializes an array with all possible placement array combinateions for the cruiser
   def all_cruiser_placements
